@@ -62,7 +62,7 @@ class MenuCategory implements MenuComponent {
 
   showDetails(indent: string = ''): void {
     console.log(`%c${indent}+ ${this.name}`, COLORS.blue);
-    this.items.forEach((item) => item.showDetails(indent + ' '));
+    // TODO: Implementar foreach
   }
 }
 
