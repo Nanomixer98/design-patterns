@@ -34,7 +34,9 @@ abstract class BaseApprover implements Approver {
       return;
     }
 
+
     console.log('Solicitud no pudo ser aprobada.');
+
   }
 }
 
