@@ -10,6 +10,7 @@
  * * Es útil cuando se necesita desacoplar el objeto que invoca
  * * la operación del objeto que sabe cómo realizarla.
  *
+ *
  */
 
 import { COLORS } from '../helpers/colors.ts';
@@ -41,7 +42,7 @@ class Fan {
 // Comandos
 
 class LightOnCommand implements Command {
-  constructor(private light: Light) {}
+  constructor(private light: Light) { }
 
   execute(): void {
     this.light.turnOn();
@@ -49,7 +50,7 @@ class LightOnCommand implements Command {
 }
 
 class LightOffCommand implements Command {
-  constructor(private light: Light) {}
+  constructor(private light: Light) { }
 
   execute(): void {
     this.light.turnOff();
@@ -57,7 +58,7 @@ class LightOffCommand implements Command {
 }
 
 class FanOnCommand implements Command {
-  constructor(private fan: Fan) {}
+  constructor(private fan: Fan) { }
 
   execute(): void {
     this.fan.on();
@@ -65,7 +66,7 @@ class FanOnCommand implements Command {
 }
 
 class FanOffCommand implements Command {
-  constructor(private fan: Fan) {}
+  constructor(private fan: Fan) { }
 
   execute(): void {
     this.fan.off();
