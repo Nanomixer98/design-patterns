@@ -61,11 +61,6 @@ class Closed implements State {
   private door: AutomaticDoor;
   public name: string;
 
-  constructor(door: AutomaticDoor) {
-    this.door = door;
-    this.name = 'Cerrada';
-  }
-
   open(): void {
     console.log('Abriendo la puerta...');
     this.door.setState(new Opening(this.door));
@@ -83,9 +78,6 @@ class Opening implements State {
 
   constructor(door: AutomaticDoor) {
     //TODO: asignar door y name = Abriendo
-    this.door = door;
-    this.name = 'Abriendo...';
-
     this.afterOpen();
   }
 
@@ -93,7 +85,7 @@ class Opening implements State {
     await sleep(3000);
 
     console.log('La puerta se ha abierto.');
-    this.door.setState(new Open(this.door));
+    // TODO: Implementar lógica para abrir la puerta (Open)
   }
 
   open(): void {
@@ -127,7 +119,6 @@ class Open implements State {
 
 // Estado 4 - Cerrándose
 class Closing implements State {
-  private door: AutomaticDoor;
   public name: string;
 
   constructor(door: AutomaticDoor) {
