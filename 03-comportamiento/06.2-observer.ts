@@ -24,8 +24,8 @@ interface Observer {
 // Clase Subject - WeatherStation
 // TODO: Terminal la implementación
 class WeatherStation {
-  private observers: Observer[] = [];
-  private weatherData: string = 'Soleado';
+  // observers = [];
+  // weatherData = 'Soleado';
 
   // Agregar un Observer
   subscribe(observer: Observer): void {
