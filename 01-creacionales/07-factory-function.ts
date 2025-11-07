@@ -8,21 +8,21 @@
  *
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
 
-type Language = 'es' | 'en' | 'fr';
+type Lenguage = 'es' | 'en' | 'fr';
 
 // i18n
-function createGreeter(lang: Language) {
+function createGreeter(lang: Lenguage) {
   return function (name: string) {
     const messages = {
       es: `Hola, %c${name}!`,
       en: `Hello, %c${name}!`,
-      fr: `Bonjour, %c${name}!`,
-    };
+      fr: `Bonjour, %c${name}!`
+    }
 
     return console.log(messages[lang], COLORS.red);
-  };
+  }
 }
 
 function main() {
@@ -30,9 +30,9 @@ function main() {
   const englishGreeter = createGreeter('en');
   const frenchGreeter = createGreeter('fr');
 
-  spanishGreeter('Fernando');
-  englishGreeter('Alice');
-  frenchGreeter('Pierre');
+  frenchGreeter('Nanomixer')
+  spanishGreeter('Nanomixer')
+  englishGreeter('Nanomixer')
 }
 
 main();

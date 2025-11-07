@@ -10,7 +10,7 @@
  * https://refactoring.guru/es/design-patterns/singleton
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
 
 class DragonBalls {
   private static instance: DragonBalls;
@@ -23,57 +23,48 @@ class DragonBalls {
   public static getInstance(): DragonBalls {
     if (!DragonBalls.instance) {
       DragonBalls.instance = new DragonBalls();
-      console.log('%cLas pelotas del Dragón han sido creadas!', COLORS.green);
+      console.log('%cDragon Balls created', COLORS.yellow);
     }
-
     return DragonBalls.instance;
   }
 
-  collectBall(): void {
+  public collectBall(): void {
     if (this.ballsCollected < 7) {
       this.ballsCollected++;
-      console.log(
-        `Pelota recolectada. Total de esferas: ${this.ballsCollected}`
-      );
-      return;
+      console.log(`%cDragon Ball collected: ${this.ballsCollected}`, COLORS.orange);
+    } else {
+      console.log('%cAll Dragon Balls collected', COLORS.red);
     }
-
-    console.log(
-      'Ya se han recolectado las 7 esferas del Dragón! Invoca a Shenlong'
-    );
   }
 
-  summonShenlong() {
+  summonShenlong(): void {
     if (this.ballsCollected === 7) {
-      console.log('Shenlong ha sido invocado, Pide tu deseo!');
+      console.log('%cShenlong summoned', COLORS.green);
       this.ballsCollected = 0;
-      return;
+    } else {
+      console.log(`%cNot enough Dragon Balls to summon Shenlong, you need to collect ${7 - this.ballsCollected} more`, COLORS.red);
     }
-
-    console.log(
-      `\nAún faltan ${7 - this.ballsCollected} pelotas para invocar a Shenlong`
-    );
   }
 }
 
 function main() {
   const gokuDragonBalls = DragonBalls.getInstance();
-
+  console.log({ gokuDragonBalls });
   gokuDragonBalls.collectBall();
   gokuDragonBalls.collectBall();
   gokuDragonBalls.collectBall();
-
   gokuDragonBalls.summonShenlong();
+  gokuDragonBalls.collectBall();
 
   const vegetaDragonBalls = DragonBalls.getInstance();
+  gokuDragonBalls.collectBall();
+  console.log({ gokuDragonBalls });
+  gokuDragonBalls.collectBall();
   vegetaDragonBalls.collectBall();
-  vegetaDragonBalls.collectBall();
-  vegetaDragonBalls.collectBall();
-  vegetaDragonBalls.collectBall();
-
-  gokuDragonBalls.summonShenlong();
-
   vegetaDragonBalls.summonShenlong();
+  console.log({ vegetaDragonBalls });
+  vegetaDragonBalls.collectBall();
+  console.log({ vegetaDragonBalls });
 }
 
 main();

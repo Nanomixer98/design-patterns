@@ -15,42 +15,36 @@ class DatabaseConnection {
   private connected: boolean = false;
 
   // Constructor privado para evitar instancias directas
-  private constructor() {}
+  private constructor() { }
 
   // Método estático para obtener la instancia única
   public static getInstance(): DatabaseConnection {
     if (!DatabaseConnection.instance) {
       DatabaseConnection.instance = new DatabaseConnection();
-      console.log('\n%cConectado a la base de datos', COLORS.blue);
     }
-
     return DatabaseConnection.instance;
   }
 
   // Método para conectar a la base de datos
   public connect(): void {
-    if (this.connected) {
-      console.log('%cYa estábamos conectados a la base de datos', COLORS.red);
+    if (!this.connected) {
+      this.connected = true;
+      console.log('%cConnected succesfully', COLORS.green);
       return;
     }
 
-    this.connected = true;
-    console.log('%cNueva conexión a la base de datos', COLORS.green);
-    // Completar: si no está conectado, mostrar mensaje de conexión
+    console.log('%cAlready conected', COLORS.red);
   }
 
   // Método para desconectar de la base de datos
   public disconnect(): void {
     if (this.connected) {
-      console.log(
-        '%cDesconectamos la conexión a la base de datos',
-        COLORS.blue
-      );
       this.connected = false;
+      console.log('%cDisconnected', COLORS.red);
       return;
     }
 
-    console.log('%cNo hay una conexión activa', COLORS.red);
+    console.log('%cNo active connection', COLORS.red);
   }
 }
 
@@ -65,7 +59,7 @@ function main() {
   console.log('Son iguales:', db1 === db2); // Debería mostrar true
 
   db1.disconnect(); // Debería cerrar la conexión
-  db2.disconnect();
+  db1.disconnect();
 
   db2.connect(); // Ahora debería conectar de nuevo, ya que se cerró la anterior
 }

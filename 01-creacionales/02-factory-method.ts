@@ -21,19 +21,19 @@ interface Hamburger {
 
 class ChickenHamburger implements Hamburger {
   prepare(): void {
-    console.log('Preparando una hamburguesa de %cpollo', COLORS.yellow);
+    console.log('Preparing %chicken chamburger', COLORS.yellow);
   }
 }
 
 class BeefHamburger implements Hamburger {
   prepare(): void {
-    console.log('Preparando una hamburguesa de %cres', COLORS.brown);
+    console.log('Preparing %cbeef hamburger', COLORS.brown);
   }
 }
 
 class BeanHamburger implements Hamburger {
   prepare(): void {
-    console.log('Preparando una hamburguesa de %cfrijol', COLORS.orange);
+    console.log('Preparing %cbean hamburger', COLORS.black);
   }
 }
 
@@ -68,24 +68,22 @@ function main() {
   let restaurant: Restaurant;
 
   const burgerType = prompt(
-    '¿Qué tipo de hamburguesa quieres? ( chicken/beef/bean )'
+    'Enter the type of hamburger (chicken/beef/bean): '
   );
 
   switch (burgerType) {
     case 'chicken':
       restaurant = new ChickenRestaurant();
       break;
-
     case 'beef':
       restaurant = new BeefRestaurant();
       break;
-
     case 'bean':
       restaurant = new BeanRestaurant();
       break;
-
     default:
-      throw new Error('Opción no válida');
+      console.log('Invalid hamburger type');
+      return;
   }
 
   restaurant.orderHamburger();

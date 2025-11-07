@@ -11,38 +11,27 @@
  */
 
 class Document {
-  public title: string;
-  private content: string;
-  public author: string;
+  constructor(public title: string, private content: string, public author: string) { }
 
-  constructor(title: string, content: string, author: string) {
-    this.title = title;
-    this.content = content;
-    this.author = author;
+  displayInfo(): void {
+    console.log(`Title: ${this.title}`);
+    console.log(`Content: ${this.content}`);
+    console.log(`Author: ${this.author}`);
   }
 
   clone(): Document {
     return new Document(this.title, this.content, this.author);
   }
-
-  displayInfo() {
-    console.log(`
-      Title: ${this.title}
-      Content: ${this.content}
-      Author: ${this.author}
-    `);
-  }
 }
 
 function main() {
-  const document1 = new Document('Cotización', '500 dólares', 'Fernando');
+  const document = new Document('Cotizacion de productos', 'Cotizacion de productos de la empresa XYZ', 'Juan Perez');
+  console.log({ document });
+  document.displayInfo();
 
-  console.log({ document1 });
-  document1.displayInfo();
-
-  const document2 = document1.clone();
-  document2.title = 'Nueva cotización';
-
+  // const document2 = {...document};
+  // const document2 = structuredClone(document);
+  const document2 = document.clone();
   console.log({ document2 });
   document2.displayInfo();
 }

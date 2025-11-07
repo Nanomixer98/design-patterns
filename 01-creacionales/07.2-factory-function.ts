@@ -8,13 +8,14 @@
  *
  */
 
+import { COLORS } from "../helpers/colors.ts";
+
 //! Salida esperada
 //! Colocar colores de log según el nivel
 //* [INFO:2025-10-21:07] Aplicación iniciada correctamente.
 //* [WARNING:2025-10-21:07] El uso de memoria está alto.
 //* [ERROR:2025-10-21:07] Error de conexión a la base de datos.
 
-import { COLORS } from '../helpers/colors.ts';
 
 function formatDate(date: Date): string {
   const year = date.getFullYear();
@@ -32,26 +33,16 @@ type LogLevel = 'info' | 'warn' | 'error';
 
 function createLogger(level: LogLevel) {
   // Retorna una función que recibe el "message" como argumento
-  // Completar: implementar el logger con formato y color para cada nivel
-  return (message: string) => {
-    const timestamp = formatDate(new Date());
-    const logColor = {
-      info: COLORS.white,
-      warn: COLORS.yellow,
-      error: COLORS.red,
-    };
+  return function (message: string): void {
+    const timestamps = formatDate(new Date);
+    const loggers = {
+      info: [`%c [INFO: ${timestamps}] ${message}.`, COLORS.blue],
+      warn: [`%c [WARNING: ${timestamps}] ${message}.`, COLORS.yellow],
+      error: [`%c [ERROR: ${timestamps}] ${message}.`, COLORS.red]
+    }
 
-    const prefix = {
-      info: 'INFO',
-      warn: 'WARNING',
-      error: 'ERROR',
-    };
-
-    console.log(
-      `%c[${prefix[level]}: ${timestamp}] ${message}`,
-      logColor[level]
-    );
-  };
+    return console.log(...loggers[level])
+  }
 }
 
 // Ejemplo de uso
