@@ -12,7 +12,7 @@
  * https://refactoring.guru/es/design-patterns/decorator
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
 
 interface Notification {
   send(message: string): void;
@@ -20,65 +20,48 @@ interface Notification {
 
 class BasicNotification implements Notification {
   send(message: string): void {
-    console.log(
-      `%cEnviando notificación básica: %c${message}`,
-      COLORS.blue,
-      COLORS.white
-    );
+    console.log(`%cSending basic notification: ${message}`, COLORS.cyan);
   }
 }
 
-// Clase decoradora
+// Decorator class
 abstract class NotificationDecorator implements Notification {
-  protected notification: Notification;
-
-  constructor(notification: Notification) {
-    this.notification = notification;
-  }
+  constructor(protected notification: Notification) { }
 
   send(message: string): void {
-    this.notification.send(message);
+    this.notification.send(message)
   }
 }
 
-// Crear diferentes decoradores
+// Different decorators
 class EmailDecorator extends NotificationDecorator {
   private sendEmail(message: string) {
-    console.log(
-      `%cEnviando notificación por correo electrónico:%c${message}`,
-      COLORS.green,
-      COLORS.white
-    );
+    console.log(`%cSending notification by email: ${message}`, COLORS.red);
   }
 
   override send(message: string): void {
     super.send(message);
-    this.sendEmail(message);
+    this.sendEmail(message)
   }
 }
 
+// Different decorators
 class SMSDecorator extends NotificationDecorator {
   private sendSMS(message: string) {
-    console.log(
-      `%cEnviando notificación por SMS: %c${message}`,
-      COLORS.red,
-      COLORS.white
-    );
+    console.log(`%cSending notification by SMS: ${message}`, COLORS.yellow);
   }
 
   override send(message: string): void {
-    super.send(message);
-    this.sendSMS(message);
+    super.send(message)
+    this.sendSMS(message)
   }
 }
 
 function main() {
   let notification: Notification = new BasicNotification();
-
   notification = new EmailDecorator(notification);
   notification = new SMSDecorator(notification);
-
-  notification.send('Alerta de sistema!');
+  notification.send('system alert')
 }
 
 main();

@@ -10,7 +10,7 @@
  * https://refactoring.guru/es/design-patterns/bridge
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
 
 interface Ability {
   use(): void;
@@ -18,25 +18,25 @@ interface Ability {
 
 class SwordAttack implements Ability {
   use(): void {
-    console.log('Ataca con una %cespada ferozmente', COLORS.blue);
+    console.log('Attack with a %csword', COLORS.blue);
   }
 }
 
 class AxeAttack implements Ability {
   use(): void {
-    console.log('Ataca con una %chacha brutalmente', COLORS.blue);
+    console.log('Attack with an %caxe', COLORS.green);
   }
 }
 
 class MagicSpell implements Ability {
   use(): void {
-    console.log('Lanza un hechizo %cmágico poderoso', COLORS.green);
+    console.log('Attack with a %cmagic spell', COLORS.purple);
   }
 }
 
-class FireballSpell implements Ability {
+class FireBallSpell implements Ability {
   use(): void {
-    console.log('Lanza una %cbola de fuego', COLORS.green);
+    console.log('Attack with a %cfire ball spell', COLORS.red);
   }
 }
 
@@ -56,14 +56,14 @@ abstract class Character {
 
 class Warrior extends Character {
   override performAbility(): void {
-    console.log('\nEl guerrero está listo para luchar');
+    console.log('\nThe warrior is ready to fight');
     this.ability.use();
   }
 }
 
 class Mage extends Character {
   override performAbility(): void {
-    console.log('\nEl mago prepara su magia');
+    console.log('\nThe mage is ready to cast spells');
     this.ability.use();
   }
 }
@@ -71,11 +71,12 @@ class Mage extends Character {
 function main() {
   const warrior = new Warrior(new SwordAttack());
   warrior.performAbility();
-
   warrior.setAbility(new AxeAttack());
   warrior.performAbility();
 
-  const mage = new Mage(new FireballSpell());
+  const mage = new Mage(new MagicSpell());
+  mage.performAbility();
+  mage.setAbility(new FireBallSpell());
   mage.performAbility();
 }
 

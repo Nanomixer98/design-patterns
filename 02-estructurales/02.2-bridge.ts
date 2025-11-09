@@ -41,13 +41,9 @@ class PushNotificationChannel implements NotificationChannel {
 // Define la propiedad `channel` y el método `notify`
 
 abstract class Notification {
-  protected channel: NotificationChannel;
+  constructor(protected channel: NotificationChannel) { };
 
-  constructor(channel: NotificationChannel) {
-    this.channel = channel;
-  }
-
-  abstract notify(message: string): void;
+  abstract notify(msg: string): void;
   abstract setChannel(channel: NotificationChannel): void;
 }
 
@@ -65,12 +61,12 @@ class AlertNotification extends Notification {
 }
 
 class ReminderNotification extends Notification {
-  notify(message: string): void {
+  override notify(message: string): void {
     console.log('\n%cNotificación de Recordatorio:', COLORS.blue);
-    this.channel.send(message);
+    this.channel.send(message)
   }
 
-  setChannel(channel: NotificationChannel): void {
+  override setChannel(channel: NotificationChannel): void {
     this.channel = channel;
   }
 }
@@ -78,7 +74,7 @@ class ReminderNotification extends Notification {
 class PushNotification extends Notification {
   override notify(message: string): void {
     console.log('\n%cNotificación de Push:', COLORS.green);
-    this.channel.send(message);
+    this.channel.send(message)
   }
 
   override setChannel(channel: NotificationChannel): void {

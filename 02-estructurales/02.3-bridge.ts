@@ -9,7 +9,6 @@
  *
  * https://refactoring.guru/es/design-patterns/bridge
  */
-
 import { COLORS } from '../helpers/colors.ts';
 
 // 1. Interfaz NotificationChannel
@@ -42,11 +41,7 @@ class PushNotificationChannel implements NotificationChannel {
 // Define la propiedad `channel` y el método `notify`
 
 abstract class Notification {
-  protected channels: NotificationChannel[];
-
-  constructor(channels: NotificationChannel[]) {
-    this.channels = channels;
-  }
+  constructor(protected channels: NotificationChannel[]) { };
 
   abstract notify(message: string): void;
   abstract addChannel(channel: NotificationChannel): void;
@@ -54,31 +49,27 @@ abstract class Notification {
 
 class AlertNotification extends Notification {
   override notify(message: string): void {
-    console.log('\n%cNotificación de alerta', COLORS.red);
-    this.channels.forEach((channel) => channel.send(message));
+    console.log('%cAlert notification', COLORS.red);
+    this.channels.forEach((channel) => channel.send(message))
   }
-
   override addChannel(channel: NotificationChannel): void {
-    this.channels.push(channel);
+    this.channels.push(channel)
   }
 }
 
 function main() {
   const channels = [
+    new PushNotificationChannel(),
+    new PushNotificationChannel(),
+    new EmailChannel(),
     new EmailChannel(),
     new SMSChannel(),
-    new PushNotificationChannel(),
-    new PushNotificationChannel(),
-    new PushNotificationChannel(),
-    new SMSChannel(),
     new EmailChannel(),
-  ];
+    new SMSChannel()
+  ]
 
   const alert = new AlertNotification(channels);
-
-  alert.notify('Alguien en frente de la casa');
-
-  console.log('\n');
+  alert.notify('Security alert - Someone in house front')
 }
 
 main();

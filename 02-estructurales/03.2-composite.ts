@@ -46,36 +46,36 @@ class MenuItem implements MenuComponent {
 class MenuCategory implements MenuComponent {
   private name: string;
   private items: MenuComponent[] = [];
-
   constructor(name: string) {
-    this.name = name;
+    this.name = name
   }
 
   add(item: MenuComponent | MenuComponent[]): void {
     if (Array.isArray(item)) {
-      this.items.push(...item);
-      return;
+      this.items.push(...item)
+    } else {
+      this.items.push(item)
     }
-
-    this.items.push(item);
   }
 
   showDetails(indent: string = ''): void {
     console.log(`%c${indent}+ ${this.name}`, COLORS.blue);
-    this.items.forEach((item) => item.showDetails(indent + ' '));
+    this.items.forEach(item => item.showDetails(indent + '\t'))
   }
 }
 
 // 4. Código Cliente para Probar el Composite
+// Deben de ver la gráfica correcta del menú
 function main() {
   // Crear ítems individuales
   const salad = new MenuItem('Ensalada', 5.99);
   const soup = new MenuItem('Sopa de tomate', 4.99);
   const steak = new MenuItem('Bistec', 15.99);
   const soda = new MenuItem('Refresco', 2.5);
+  const beer = new MenuItem('Cerveza', 4.5);
   const dessert = new MenuItem('Pastel de chocolate', 6.5);
   const coffee = new MenuItem('Café', 1.99);
-  const te = new MenuItem('Te', 0.99);
+  const tea = new MenuItem('Té', 0.99);
 
   // Crear categorías de menú y añadir ítems
   const appetizers = new MenuCategory('Entradas');
@@ -87,13 +87,13 @@ function main() {
 
   const beverages = new MenuCategory('Bebidas');
 
-  const hotBeverages = new MenuCategory('Calientes');
-  const coldBeverages = new MenuCategory('Frías');
-
+  const coldBeverages = new MenuCategory('Bebidas frias');
   coldBeverages.add(soda);
+  coldBeverages.add(beer);
 
+  const hotBeverages = new MenuCategory('Bebidas calientes');
   hotBeverages.add(coffee);
-  hotBeverages.add(te);
+  hotBeverages.add(tea)
 
   beverages.add([coldBeverages, hotBeverages]);
 

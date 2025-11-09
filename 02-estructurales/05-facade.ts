@@ -12,53 +12,53 @@
  * https://refactoring.guru/es/design-patterns/facade
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
 
 class Projector {
   turnOn() {
-    console.log('Proyector encendido');
+    console.log('Projector turned on');
   }
 
   turnOff() {
-    console.log('Proyecto apagado');
+    console.log('Projector turned off');
   }
 }
 
 class SoundSystem {
   on() {
-    console.log('Sistema de sonido encendido');
+    console.log('Sound system turned on');
   }
 
   off() {
-    console.log('Sistema de sonido apagado');
+    console.log('Sound system turned off');
   }
 }
 
 class VideoPlayer {
   on() {
-    console.log('Video player encendido');
+    console.log('Video player turned on');
   }
 
   play(movie: string) {
-    console.log(`Reproduciendo %c${movie}`, COLORS.blue);
+    console.log(`%cVideo player playing ${movie}`, COLORS.green);
   }
 
   stop() {
-    console.log('Película detenida');
+    console.log('Video player stopped');
   }
 
   off() {
-    console.log('Video player apagado');
+    console.log('Video player turned off');
   }
 }
 
-class PopcornMaker {
+class PopcornMachine {
   poppingPopcorn() {
-    console.log('Haciendo palomitas');
+    console.log('Popcorn machine turned on');
   }
 
   turnOffPoppingPopcorn() {
-    console.log('Deteniendo las palomitas');
+    console.log('Popcorn machine turned off');
   }
 }
 
@@ -66,66 +66,55 @@ interface HomeTheaterFacadeOptions {
   projector: Projector;
   soundSystem: SoundSystem;
   videoPlayer: VideoPlayer;
-  popcornMaker: PopcornMaker;
+  popcornMachine: PopcornMachine;
 }
 
 class HomeTheaterFacade {
   private projector: Projector;
   private soundSystem: SoundSystem;
   private videoPlayer: VideoPlayer;
-  private popcornMaker: PopcornMaker;
+  private popcornMachine: PopcornMachine;
 
-  constructor({
-    popcornMaker,
-    projector,
-    soundSystem,
-    videoPlayer,
-  }: HomeTheaterFacadeOptions) {
+  constructor({ projector, soundSystem, videoPlayer, popcornMachine }: HomeTheaterFacadeOptions) {
     this.projector = projector;
-    this.popcornMaker = popcornMaker;
-    this.videoPlayer = videoPlayer;
     this.soundSystem = soundSystem;
+    this.videoPlayer = videoPlayer;
+    this.popcornMachine = popcornMachine;
   }
 
   watchMovie(movie: string): void {
-    console.log('%cPreparando para ver la película', COLORS.blue);
+    console.log('%cPreparing to watch movie...', COLORS.purple);
     this.projector.turnOn();
     this.soundSystem.on();
-    this.popcornMaker.poppingPopcorn();
+    this.popcornMachine.poppingPopcorn();
     this.videoPlayer.on();
     this.videoPlayer.play(movie);
 
-    console.log('%cDisfrute la película', COLORS.blue);
+    console.log('%cEnjoying the movie!\n', COLORS.green);
   }
 
-  endWatchingMovie(): void {
-    console.log('%c\n\nPreparando para detener la película', COLORS.blue);
-    this.projector.turnOff();
-    this.soundSystem.off();
-    this.popcornMaker.turnOffPoppingPopcorn();
+  endMovie(): void {
+    console.log('%cEnding movie...', COLORS.red);
     this.videoPlayer.stop();
+    this.popcornMachine.turnOffPoppingPopcorn();
     this.videoPlayer.off();
-
-    console.log('%cSistema apagado\n', COLORS.blue);
+    this.soundSystem.off();
+    this.projector.turnOff();
+    console.log('%cMovie ended!\n', COLORS.green);
   }
 }
 
 function main() {
-  const projector = new Projector();
-  const soundSystem = new SoundSystem();
-  const videoPlayer = new VideoPlayer();
-  const popcornMaker = new PopcornMaker();
+  const homeTheaterFacadeOption: HomeTheaterFacadeOptions = {
+    popcornMachine: new PopcornMachine(),
+    projector: new Projector(),
+    soundSystem: new SoundSystem(),
+    videoPlayer: new VideoPlayer(),
+  }
 
-  const homeTheater = new HomeTheaterFacade({
-    projector,
-    soundSystem,
-    videoPlayer,
-    popcornMaker,
-  });
-
-  homeTheater.watchMovie('Los Avengers');
-
-  homeTheater.endWatchingMovie();
+  const homeTheaterFacade = new HomeTheaterFacade(homeTheaterFacadeOption);
+  homeTheaterFacade.watchMovie('Terminator');
+  homeTheaterFacade.endMovie();
 }
 
 main();

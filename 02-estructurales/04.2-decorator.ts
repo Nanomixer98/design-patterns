@@ -12,39 +12,39 @@
  * https://refactoring.guru/es/design-patterns/decorator
  */
 
+interface Stats {
+  attack: number;
+  defense: number;
+}
+
 // 1. Interfaz Character
 interface Character {
   getDescription(): string;
-  getStats(): { attack: number; defense: number };
+  getStats(): Stats;
 }
 
 // 2. Clase BasicCharacter
 // Representa un personaje básico sin accesorios
-// TODO: Implementar la interfaz Character
-class BasicCharacter implements Character {
+class BasicCharacter {
   getDescription(): string {
     return 'Personaje básico';
   }
-
-  getStats(): { attack: number; defense: number } {
-    return { attack: 10, defense: 10 };
+  getStats(): Stats {
+    return { attack: 25, defense: 25 };
   }
 }
 
 // 3. Clase Decoradora CharacterDecorator
 // Actúa como base para los decoradores específicos
 abstract class CharacterDecorator implements Character {
-  protected character: Character;
 
-  constructor(character: Character) {
-    this.character = character;
-  }
+  constructor(protected character: Character) { }
 
   getDescription(): string {
     return this.character.getDescription();
   }
 
-  getStats(): { attack: number; defense: number } {
+  getStats(): Stats {
     return this.character.getStats();
   }
 }
@@ -56,7 +56,7 @@ class HelmetDecorator extends CharacterDecorator {
     return this.character.getDescription() + '\n * con Casco';
   }
 
-  override getStats(): { attack: number; defense: number } {
+  override getStats(): Stats {
     const stats = this.character.getStats();
     return { attack: stats.attack, defense: stats.defense + 5 };
   }
@@ -66,11 +66,11 @@ class HelmetDecorator extends CharacterDecorator {
 // Añade un escudo que aumenta la defensa en +10
 class ShieldDecorator extends CharacterDecorator {
   override getDescription(): string {
-    return this.character.getDescription() + '\n * con Escudo';
+    return super.getDescription() + '\n * con Escudo';
   }
 
-  override getStats(): { attack: number; defense: number } {
-    const stats = this.character.getStats();
+  override getStats(): Stats {
+    const stats = super.getStats();
     return { attack: stats.attack, defense: stats.defense + 10 };
   }
 }
@@ -82,22 +82,20 @@ class SwordDecorator extends CharacterDecorator {
     return this.character.getDescription() + '\n * con Espada';
   }
 
-  override getStats(): { attack: number; defense: number } {
+  override getStats(): Stats {
     const stats = this.character.getStats();
     return { attack: stats.attack + 7, defense: stats.defense };
   }
 }
 
-// TODO: Crear un nuevo decorador que añada un anillo que aumenta el ataque en +3
-// class RingDecorator ...
 class RingDecorator extends CharacterDecorator {
   override getDescription(): string {
-    return this.character.getDescription() + '\n * con Anillo';
+    return this.character.getDescription() + '\n * con Anillo Magico';
   }
 
-  override getStats(): { attack: number; defense: number } {
+  override getStats(): Stats {
     const stats = this.character.getStats();
-    return { attack: stats.attack + 3, defense: stats.defense };
+    return { attack: stats.attack + 3, defense: stats.defense }
   }
 }
 
