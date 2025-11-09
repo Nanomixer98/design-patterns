@@ -1,3 +1,5 @@
+import { COLORS } from "../helpers/colors.ts";
+
 /**
  * ! Patrón Proxy
  * Este patrón se utiliza para controlar el acceso a un objeto, es decir,
@@ -10,9 +12,6 @@
  * https://refactoring.guru/es/design-patterns/proxy
  *
  */
-
-import { COLORS } from '../helpers/colors.ts';
-
 class Player {
   name: string;
   level: number;
@@ -29,43 +28,41 @@ interface Room {
 
 class SecretRoom implements Room {
   enter(player: Player): void {
-    console.log(`%cBienvenido a la sala secreta, ${player.name}`, COLORS.blue);
-    console.log(`Una gran enemigo te espera`);
+    console.log(`%c Welcome to the secret room ${player.name}!`, COLORS.green);
+    console.log('A grand reward awaits you!');
   }
 }
 
-// 3. Clase Proxy - Magic Portal
+// Proxy class - magic portal
 class MagicPortal implements Room {
-  private secretRom: Room;
+  private secretRoom: SecretRoom;
 
-  constructor(room: Room) {
-    this.secretRom = room;
+  constructor(room: SecretRoom) {
+    this.secretRoom = room
   }
 
   enter(player: Player): void {
     if (player.level >= 10) {
-      this.secretRom.enter(player);
+      this.secretRoom.enter(player);
       return;
     }
 
-    console.log(
-      `%cLo siento mucho ${player.name}, Tu nivel ${player.level}, es muy bajo, necesitas nivel 10`,
-      COLORS.red
-    );
+    console.log(`%c Access denied for ${player.name}. You need to be level 10 to enter the secret room.`, COLORS.red);
   }
 }
 
 function main() {
-  const portal = new MagicPortal(new SecretRoom()); // Proxy
+  const secretRoom = new SecretRoom();
+  const magicPortal = new MagicPortal(secretRoom);
 
-  const player1 = new Player('Aventurero A', 5);
-  const player2 = new Player('Aventurero B', 15);
+  const player = new Player('John', 10);
+  const player2 = new Player('Jane', 5);
 
-  console.log('%cAventurero A intenta entrar al portal', COLORS.blue);
-  portal.enter(player1);
+  magicPortal.enter(player);
+  console.log('\n');
 
-  console.log('%c\nAventurero B intenta entrar al portal', COLORS.blue);
-  portal.enter(player2);
+  magicPortal.enter(player2);
+  console.log('\n');
 }
 
 main();

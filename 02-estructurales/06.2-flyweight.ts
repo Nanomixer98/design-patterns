@@ -39,14 +39,15 @@ class BulletTypeFactory {
   private bulletTypes: Record<string, BulletType> = {};
 
   getBulletType(name: string, damage: number, color: string): BulletType {
-    const key = `${name}-${damage}-${color}`;
 
-    if (!this.bulletTypes[key]) {
-      console.log(`%cCreando una instancia ${key}`, COLORS.red);
-      this.bulletTypes[key] = new BulletType(name, damage, color);
+    const id = `${name}-${damage}-${color}`
+    if (!this.bulletTypes[id]) {
+      console.log('%c => New bullet type created', COLORS.red);
+      this.bulletTypes[id] = new BulletType(name, damage, color)
     }
 
-    return this.bulletTypes[key];
+    return this.bulletTypes[id];
+
   }
 }
 
@@ -114,6 +115,7 @@ function main() {
 
   // Disparar varias balas de diferentes tipos
   shootingSystem.shoot(10, 20, 0, 'Pistola', 10, 'Gris');
+  shootingSystem.shoot(100, 200, 1000, 'Pistola', 10, 'Gris');
   shootingSystem.shoot(15, 25, 90, 'Escopeta', 20, 'Rojo');
   shootingSystem.shoot(20, 30, 180, 'Rifle', 15, 'Verde');
   shootingSystem.shoot(10, 20, 45, 'Pistola', 10, 'Gris');

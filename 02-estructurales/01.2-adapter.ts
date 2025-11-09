@@ -46,40 +46,28 @@ class MercadoPagoService {
 
 // Adaptador para PayPal
 class PayPalAdapter implements PaymentProcessor {
-  private paypalService: PayPalService;
-
-  constructor(service: PayPalService) {
-    this.paypalService = service;
-  }
+  constructor(private payPalService: PayPalService) { }
 
   processPayment(amount: number): void {
-    this.paypalService.sendPayment(amount);
+    this.payPalService.sendPayment(amount)
   }
 }
 
 // Adaptador para Stripe
-class StripeAdapter implements PaymentProcessor {
-  private stripeService: StripeService;
-
-  constructor(service: StripeService) {
-    this.stripeService = service;
-  }
+class StripeAdapter {
+  constructor(private stripeService: StripeService) { }
 
   processPayment(amount: number): void {
-    this.stripeService.makeCharge(amount);
+    this.stripeService.makeCharge(amount)
   }
 }
 
 // Adaptador para MercadoPago
-class MercadoPagoAdapter implements PaymentProcessor {
-  private mercadoPagoService: MercadoPagoService;
-
-  constructor(service: MercadoPagoService) {
-    this.mercadoPagoService = service;
-  }
+class MercadoPagoAdapter {
+  constructor(private mercadoPagoService: MercadoPagoService) { }
 
   processPayment(amount: number): void {
-    this.mercadoPagoService.pay(amount);
+    this.mercadoPagoService.pay(amount)
   }
 }
 
@@ -88,16 +76,10 @@ class MercadoPagoAdapter implements PaymentProcessor {
 function main() {
   const paymentAmount = 100;
 
-  // TODO: Agregar los adaptadores para los servicios de pago
-  const paypalProcessor: PaymentProcessor = new PayPalAdapter(
-    new PayPalService()
-  );
-  const stripeProcessor: PaymentProcessor = new StripeAdapter(
-    new StripeService()
-  );
-  const mercadoPagoProcessor: PaymentProcessor = new MercadoPagoAdapter(
-    new MercadoPagoService()
-  );
+
+  const paypalProcessor: PaymentProcessor = new PayPalAdapter(new PayPalService());
+  const stripeProcessor: PaymentProcessor = new StripeAdapter(new StripeService());
+  const mercadoPagoProcessor: PaymentProcessor = new MercadoPagoAdapter(new MercadoPagoService());
 
   // Procesar pagos con los diferentes servicios
   // Los 3 procesadores de pago trabajan exactamente igual después de adaptaros
