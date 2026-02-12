@@ -9,6 +9,12 @@
  * https://refactoring.guru/es/design-patterns/iterator
  */
 
+interface Iterator<T> {
+  next(): T | null;
+  hasNext(): boolean;
+  current(): T | null;
+}
+
 // Clase que representa una Carta de la baraja
 class Card {
   name: string;
@@ -28,16 +34,43 @@ class CardCollection {
     this.cards.push(card);
   }
 
-  // Implementación del iterador usando Symbol.iterator
-  *[Symbol.iterator](): IterableIterator<Card> {
-    yield* this.cards;
+  getCardAt(index: number): Card | null {
+    if (index >= 0 && index < this.cards.length) {
+      return this.cards[index]
+    }
+    return null;
   }
 
-  // Implementación del iterador usando Generadores
-  *getCard(): IterableIterator<Card> {
-    for (const card of this.cards) {
-      yield card;
+  getLength(): number {
+    return this.cards.length;
+  }
+
+  createIterator(): CardsIterator {
+    return new CardsIterator(this)
+  }
+}
+
+class CardsIterator implements Iterator<Card> {
+  private collection: CardCollection;
+  private position: number = 0;
+
+  constructor(collection: CardCollection) {
+    this.collection = collection;
+  }
+
+  next(): Card | null {
+    if (this.hasNext()) {
+      return this.collection.getCardAt(this.position++)
     }
+    return null;
+  }
+
+  hasNext(): boolean {
+    return this.position < this.collection.getLength()
+  }
+
+  current(): Card | null {
+    return this.collection.getCardAt(this.position)
   }
 }
 
@@ -54,8 +87,10 @@ function main(): void {
 
   // Recorrer la colección en orden usando for...of
   console.log('Recorriendo la colección de cartas:');
-  for (const card of deck.getCard()) {
-    console.log(`Carta: ${card.name}, Valor: ${card.value}`);
+  const iteratior = deck.createIterator();
+  while (iteratior.hasNext()) {
+    const card = iteratior.next()
+    console.log(`Carta: ${card?.name}, Valor: ${card?.value}`);
   }
 }
 

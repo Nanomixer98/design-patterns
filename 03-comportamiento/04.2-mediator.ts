@@ -12,19 +12,19 @@
 
 /**
  * 1.	Clase ControlTower:
-	•	Actúa como el Mediador entre los aviones. 
+  •	Actúa como el Mediador entre los aviones. 
     La torre de control coordina las comunicaciones entre los aviones 
     para evitar colisiones y recibir sus solicitudes de despegue 
     o aterrizaje.
 
-	2.	Clase Airplane:
-	•	Representa a un avión que puede enviar y recibir mensajes 
+  2.	Clase Airplane:
+  •	Representa a un avión que puede enviar y recibir mensajes 
     a través de la torre de control. 
     Los aviones no se comunican directamente entre sí, 
     sino a través de la torre de control, que gestiona la información.
 
-	3.	Interacciones:
-	•	Los aviones pueden solicitar permiso para aterrizar o despegar, 
+  3.	Interacciones:
+  •	Los aviones pueden solicitar permiso para aterrizar o despegar, 
     y la torre de control enviará mensajes a los demás aviones 
     notificándoles de la actividad de cada avión.
  */
@@ -37,14 +37,15 @@ class ControlTower {
 
   // Registrar un avión en la torre de control
   registerAirplane(airplane: Airplane) {
-    this.airplanes.push(airplane);
+    this.airplanes.push(airplane)
   }
 
   // Enviar un mensaje de un avión a todos los demás
   sendMessage(sender: Airplane, message: string): void {
-    this.airplanes
-      .filter((airplane) => airplane !== sender)
-      .forEach((airplane) => airplane.receiveMessage(sender, message));
+    const receiversList = this.airplanes.filter((airplane) => airplane !== sender)
+    for (const airplane of receiversList) {
+      airplane.receiveMessage(sender, message);
+    }
   }
 
   // Coordinación de aterrizaje
@@ -78,8 +79,7 @@ class Airplane {
   constructor(id: string, controlTower: ControlTower) {
     this.id = id;
     this.controlTower = controlTower;
-
-    controlTower.registerAirplane(this);
+    this.controlTower.registerAirplane(this)
   }
 
   getId(): string {
@@ -89,14 +89,13 @@ class Airplane {
   // Solicitar aterrizaje a la torre de control
   requestLanding(): void {
     console.log(`${this.id} solicita permiso para aterrizar.`);
-    this.controlTower.requestLanding(this);
+    this.controlTower.requestLanding(this)
   }
 
   // Solicitar despegue a la torre de control
   requestTakeoff(): void {
     console.log(`${this.id} solicita permiso para despegar.`);
-
-    this.controlTower.requestTakeoff(this);
+    this.controlTower.requestTakeoff(this)
   }
 
   // Recibir mensaje de otros aviones

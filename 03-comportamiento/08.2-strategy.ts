@@ -73,7 +73,6 @@ class GermanyTaxStrategy implements TaxStrategy {
 class TaxCalculator {
   private strategy: TaxStrategy;
 
-  // TODO: Implementar el constructor recibiendo la estrategia a usar
   constructor(strategy: TaxStrategy) {
     this.strategy = strategy;
   }
@@ -92,17 +91,18 @@ class TaxCalculator {
 // Código Cliente para probar
 function main(): void {
   const taxCalculator = new TaxCalculator(new USATaxStrategy());
+  const amount = 436453;
 
-  console.log('%cCálculo de impuestos:\n', COLORS.red);
-  console.log('USA: $', taxCalculator.calculate(100).toFixed(2));
+  console.log(`%cCálculo de impuestos sobre $${amount}:\n`, COLORS.red);
+  console.log('USA: $', taxCalculator.calculate(amount).toFixed(2));
 
   console.log('\nCambiando a estrategia para Canada...');
   taxCalculator.setStrategy(new CanadaTaxStrategy());
-  console.log('Canada: $', taxCalculator.calculate(100).toFixed(2));
+  console.log('Canada: $', taxCalculator.calculate(amount).toFixed(2));
 
   console.log('\nCambiando a estrategia para Germany...');
   taxCalculator.setStrategy(new GermanyTaxStrategy());
-  console.log('Germany: $', taxCalculator.calculate(100).toFixed(2));
+  console.log('Germany: $', taxCalculator.calculate(amount).toFixed(2));
 }
 
 main();

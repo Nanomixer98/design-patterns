@@ -14,7 +14,7 @@
  * https://refactoring.guru/es/design-patterns/template-method
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
 
 /**
  * Contexto: Vamos a implementar un sistema que permite preparar
@@ -28,7 +28,6 @@ import { COLORS } from '../helpers/colors.ts';
  * ya que define un esqueleto general del algoritmo en una clase base
  * y delega los detalles específicos a las subclases.
  */
-
 abstract class HotBeverage {
   prepare(): void {
     this.boilWater();
@@ -38,43 +37,42 @@ abstract class HotBeverage {
   }
 
   private boilWater() {
-    console.log('Hirviendo agua...');
+    console.log('Boil water');
   }
 
   private pourInCup() {
-    console.log('Sirviendo en la taza...');
+    console.log('Pour in cup');
   }
 
   protected abstract addMainIngredient(): void;
+
   protected abstract addCondiments(): void;
 }
 
 class Tea extends HotBeverage {
   protected override addMainIngredient(): void {
-    console.log('Añadiendo una bolsa de té');
+    console.log('Adding a tea bag');
   }
-
   protected override addCondiments(): void {
-    console.log('Añadiendo miel y limón');
+    console.log('Adding sugar and honey');
   }
 }
 
 class Coffee extends HotBeverage {
   protected override addMainIngredient(): void {
-    console.log('Añadiendo café molido');
+    console.log('Adding a coffee bag');
   }
-
   protected override addCondiments(): void {
-    console.log('Añadiendo azúcar y leche');
+    console.log('Adding sugar and milk');
   }
 }
 
 function main() {
-  console.log('%cPreparando el té', COLORS.green);
+  console.log('%cPreparing a tea', COLORS.green);
   const tea = new Tea();
   tea.prepare();
 
-  console.log('\n%cPreparando café', COLORS.brown);
+  console.log('%cPreparing a coffee', COLORS.brown);
   const coffee = new Coffee();
   coffee.prepare();
 }

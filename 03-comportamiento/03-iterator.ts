@@ -16,13 +16,10 @@ interface Iterator<T> {
 }
 
 class Pokemon {
-  public name: string;
-  public type: string;
-
-  constructor(name: string, type: string) {
-    this.name = name;
-    this.type = type;
-  }
+  constructor(
+    public name: string,
+    public type: string
+  ) { }
 }
 
 class PokemonCollection {
@@ -34,9 +31,8 @@ class PokemonCollection {
 
   getPokemonAt(index: number): Pokemon | null {
     if (index >= 0 && index < this.pokemons.length) {
-      return this.pokemons[index];
+      return this.pokemons[index]
     }
-
     return null;
   }
 
@@ -45,7 +41,7 @@ class PokemonCollection {
   }
 
   createIterator(): PokemonIterator {
-    return new PokemonIterator(this);
+    return new PokemonIterator(this)
   }
 }
 
@@ -59,37 +55,34 @@ class PokemonIterator implements Iterator<Pokemon> {
 
   next(): Pokemon | null {
     if (this.hasNext()) {
-      return this.collection.getPokemonAt(this.position++);
+      return this.collection.getPokemonAt(this.position++)
     }
-
     return null;
   }
 
   hasNext(): boolean {
-    return this.position < this.collection.getLength();
+    return this.position < this.collection.getLength()
   }
 
   current(): Pokemon | null {
-    return this.collection.getPokemonAt(this.position);
+    return this.collection.getPokemonAt(this.position)
   }
 }
 
 function main() {
   const pokedex = new PokemonCollection();
-
-  pokedex.addPokemon(new Pokemon('Pikachu', 'Eléctrico'));
-  pokedex.addPokemon(new Pokemon('Charmander', 'Fuego'));
-  pokedex.addPokemon(new Pokemon('Squirtle', 'Agua'));
-  pokedex.addPokemon(new Pokemon('Bulbasaur', 'Planta'));
-  pokedex.addPokemon(new Pokemon('Jigglypuff', 'Normal'));
+  pokedex.addPokemon(new Pokemon('Pikachu', 'Electric'));
+  pokedex.addPokemon(new Pokemon('Charmander', 'Fire'));
+  pokedex.addPokemon(new Pokemon('Squirtle', 'Water'));
+  pokedex.addPokemon(new Pokemon('Bulbasaur', 'Grass'));
+  pokedex.addPokemon(new Pokemon('Greninja', 'Water'));
+  pokedex.addPokemon(new Pokemon('Rayquaza', 'Dragon/Flying'));
 
   const iterator = pokedex.createIterator();
-
   while (iterator.hasNext()) {
     const pokemon = iterator.next();
-
     if (pokemon) {
-      console.log(`Pokémon: ${pokemon.name}, Tipo: ${pokemon.type}`);
+      console.log(`Pokemon: ${pokemon.name}, Type: ${pokemon.type}`);
     }
   }
 }

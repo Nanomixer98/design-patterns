@@ -36,7 +36,7 @@ class TextEditor {
   copy(): void {
     this.clipboard = this.text;
     console.log(
-      `Texto copiado al portapapeles: \n%c"${this.clipboard}"`,
+      `Text copied to clipboard: \n%c"${this.clipboard}"`,
       COLORS.blue
     );
   }
@@ -45,18 +45,18 @@ class TextEditor {
   paste(): void {
     this.history.push(this.text); // Guardar estado antes de pegar
     this.text += this.clipboard;
-    console.log(`Texto después de pegar: \n%c"${this.text}"`, COLORS.blue);
+    console.log(`Text after paste: \n%c"${this.text}"`, COLORS.blue);
   }
 
   // Deshacer la última acción
   undo(): void {
     if (this.history.length > 0) {
       this.text = this.history.pop()!;
-      console.log(`Texto después de deshacer: \n%c"${this.text}"`, COLORS.blue);
+      console.log(`Text after undo: \n%c"${this.text}"`, COLORS.blue);
       return;
     }
 
-    console.log('No hay nada para deshacer.');
+    console.log('Nothing to undo.');
   }
 
   // Mostrar el texto actual
@@ -67,36 +67,21 @@ class TextEditor {
 
 // 3. Clases de Comandos Concretos
 class CopyCommand implements Command {
-  private editor: TextEditor;
-
-  constructor(textEditor: TextEditor) {
-    this.editor = textEditor;
-  }
-
+  constructor(private editor: TextEditor) { }
   execute(): void {
     this.editor.copy();
   }
 }
 
 class PasteCommand implements Command {
-  private editor: TextEditor;
-
-  constructor(textEditor: TextEditor) {
-    this.editor = textEditor;
-  }
-
+  constructor(private editor: TextEditor) { }
   execute(): void {
     this.editor.paste();
   }
 }
 
 class UndoCommand implements Command {
-  private editor: TextEditor;
-
-  constructor(textEditor: TextEditor) {
-    this.editor = textEditor;
-  }
-
+  constructor(private editor: TextEditor) { }
   execute(): void {
     this.editor.undo();
   }
@@ -112,12 +97,11 @@ class Toolbar {
   }
 
   clickButton(button: string): void {
-    if (this.commands[button]) {
-      this.commands[button].execute();
-      return;
+    if (!this.commands[button]) {
+      console.log(`No command assigner for button: ${button}}`);
+      return
     }
-
-    console.error(`No hay un comando asignado al botón "${button}"`);
+    this.commands[button].execute()
   }
 }
 
@@ -149,22 +133,22 @@ function main() {
   editor.type('d');
   editor.type('o');
   editor.type('!');
-  console.log(`Texto actual: %c"${editor.getText()}"`, COLORS.green);
+  console.log(`Current text: %c"${editor.getText()}"`, COLORS.green);
 
   // Usar la barra de herramientas
-  console.log('\nCopiando texto:');
+  console.log('\nCopying text...');
   toolbar.clickButton('copy');
 
-  console.log('\nPegando texto:');
+  console.log('\nPasting text...');
   toolbar.clickButton('paste');
 
-  console.log('\nDeshaciendo la última acción:');
+  console.log('\nUndoing the last action...');
   toolbar.clickButton('undo');
 
-  console.log('\nDeshaciendo de nuevo:');
+  console.log('\nUndoing again...');
   toolbar.clickButton('undo');
 
-  console.log(`\nTexto final: "${editor.getText()}"`);
+  console.log(`\nFinal text: "${editor.getText()}"`);
 }
 
 main();
