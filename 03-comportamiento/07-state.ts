@@ -9,8 +9,8 @@
  * https://refactoring.guru/es/design-patterns/state
  */
 
-import { COLORS } from '../helpers/colors.ts';
-import { sleep } from '../helpers/sleep.ts';
+import { COLORS } from "../helpers/colors.ts";
+import { sleep } from "../helpers/sleep.ts";
 
 /**
  * * Objetivo: Implementar el patrón State para simular el funcionamiento
@@ -21,7 +21,6 @@ import { sleep } from '../helpers/sleep.ts';
  *  * Entregando Producto,
  * * y su comportamiento varía dependiendo del estado actual.
  */
-
 interface State {
   name: string;
 
@@ -37,31 +36,31 @@ class VendingMachine {
     this.state = new WaitingForMoney(this);
   }
 
-  insertMoney() {
+  insertMoney(): void {
     this.state.insertMoney();
   }
 
-  selectProduct() {
+  selectProduct(): void {
     this.state.selectProduct();
-  }
+  };
 
-  dispenseProduct() {
+  dispenseProduct(): void {
     this.state.dispenseProduct();
-  }
+  };
 
   setState(newState: State) {
     this.state = newState;
-    console.log(`Estado cambió a: %c${newState.name}`, COLORS.yellow);
+    console.log(`State changed to: %c${newState.name}`, COLORS.yellow);
   }
 
   getStateName(): string {
     return this.state.name;
   }
-}
 
-// Estados
+}
+// States
 class WaitingForMoney implements State {
-  public name: string = 'Esperando Dinero';
+  public name: string = 'Waiting money';
   private vendingMachine: VendingMachine;
 
   constructor(vendingMachine: VendingMachine) {
@@ -69,25 +68,21 @@ class WaitingForMoney implements State {
   }
 
   insertMoney(): void {
-    console.log(
-      'Dinero insertado: %cAhora puedes seleccionar un producto',
-      COLORS.green
-    );
-
+    console.log('Money inserted. %cNow choose a product', COLORS.green);
     this.vendingMachine.setState(new ProductSelected(this.vendingMachine));
   }
 
   selectProduct(): void {
-    console.log('%cPrimero debes de insertar dinero.', COLORS.red);
+    console.log('%cFirst you need to insert the money.', COLORS.red);
   }
 
   dispenseProduct(): void {
-    console.log('%cPrimero debes de insertar dinero.', COLORS.red);
+    console.log('%cFirst you need to insert the money.', COLORS.red);
   }
 }
 
 class ProductSelected implements State {
-  public name: string = 'Seleccionando Producto';
+  public name: string = 'Selecting product';
   private vendingMachine: VendingMachine;
 
   constructor(vendingMachine: VendingMachine) {
@@ -95,26 +90,20 @@ class ProductSelected implements State {
   }
 
   insertMoney(): void {
-    console.log(
-      '%cPor favor selecciona un producto - dinero ya insertado',
-      COLORS.red
-    );
+    console.log('%cPlease select a product - Money alredy inserted', COLORS.red);
   }
 
   selectProduct(): void {
-    this.vendingMachine.setState(new DispensingProduct(this.vendingMachine));
+    this.vendingMachine.setState(new DispensingProduct(this.vendingMachine))
   }
 
   dispenseProduct(): void {
-    console.log(
-      '%cPor favor selecciona un producto - antes de despacharlo',
-      COLORS.red
-    );
+    console.log('%cFirst you need to select a product.', COLORS.red);
   }
 }
 
 class DispensingProduct implements State {
-  public name: string = 'Despachando producto';
+  public name: string = 'Dispensing product';
   private vendingMachine: VendingMachine;
 
   constructor(vendingMachine: VendingMachine) {
@@ -122,20 +111,16 @@ class DispensingProduct implements State {
   }
 
   insertMoney(): void {
-    console.log('%cPor favor espera a que se entregue el producto', COLORS.red);
+    console.log('%cPlease wait for the product to dispense', COLORS.red);
   }
 
   selectProduct(): void {
-    console.log('%cProducto ya seleccionado y despachando', COLORS.red);
+    console.log('%cProduct already chosen and its way', COLORS.red);
   }
 
   dispenseProduct(): void {
-    console.log(
-      '%cProducto despachado, Cambiando estado a EsperandoDinero',
-      COLORS.green
-    );
-
-    this.vendingMachine.setState(new WaitingForMoney(this.vendingMachine));
+    console.log('%cProduct dispensed. Changin to Waiting money', COLORS.green);
+    this.vendingMachine.setState(new WaitingForMoney(this.vendingMachine))
   }
 }
 
@@ -146,36 +131,34 @@ async function main() {
 
   do {
     console.clear();
-    console.log(
-      `Selecciona una opción: %c${vendingMachine.getStateName()}`,
-      COLORS.blue
-    );
+    console.log(`Select an option: %c${vendingMachine.getStateName()}`, COLORS.pink);
 
     selectedOption = prompt(
       `
-        1. Insertar dinero
-        2. Seleccionar producto
-        3. Dispensar producto
-        4. Salir
+                1. Insertar dinero
+                2. Seleccionar producto
+                3. Dispensar producto
+                4. Salir
 
-        opción: `
+                Option: `
     );
 
     switch (selectedOption) {
       case '1':
-        vendingMachine.insertMoney();
+        vendingMachine.insertMoney()
         break;
       case '2':
-        vendingMachine.selectProduct();
+        vendingMachine.selectProduct()
         break;
       case '3':
-        vendingMachine.dispenseProduct();
+        vendingMachine.dispenseProduct()
         break;
       case '4':
-        console.log('Saliendo de sistema');
+        console.log('See ya');
         break;
       default:
-        console.log('Opción no válida');
+        console.log('No valid option');
+        break;
     }
 
     await sleep(3000);

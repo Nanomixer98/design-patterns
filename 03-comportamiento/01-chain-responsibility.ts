@@ -10,7 +10,7 @@
  * https://refactoring.guru/es/design-patterns/chain-of-responsibility
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
 
 interface Handler {
   setNext(handler: Handler): Handler;
@@ -22,78 +22,64 @@ abstract class BaseHandler implements Handler {
 
   setNext(handler: Handler): Handler {
     this.nextHandler = handler;
-    return handler;
+    return handler
   }
 
   handle(request: string): void {
     if (this.nextHandler) {
-      this.nextHandler.handle(request);
+      this.nextHandler.handle(request)
     }
   }
 }
 
-// Soporte básico
+// Basic support
 class BasicSupport extends BaseHandler {
   override handle(request: string): void {
-    if (request === 'básico') {
-      console.log(
-        'Soporte básico: %cResolviendo problema básico',
-        COLORS.green
-      );
+    if (request === 'basic') {
+      console.log('%c > Basic support: Solving basic problem', COLORS.green);
+      console.log('\n');
       return;
     }
-
-    console.log('Soporte básico: Pasando el problema a soporte avanzado');
+    console.log('%c ==> Basic support: escaling problem to advanced support', COLORS.yellow);
     super.handle(request);
   }
 }
 
+// Advanced support
 class AdvancedSupport extends BaseHandler {
   override handle(request: string): void {
-    if (request === 'avanzado') {
-      console.log(
-        'Soporte avanzado: %cResolviendo problema avanzado',
-        COLORS.yellow
-      );
+    if (request === 'advanced') {
+      console.log('%c > Advanced support: Solving basic problem', COLORS.green);
+      console.log('\n');
       return;
     }
-
-    console.log(
-      'Soporte avanzado: %cPasando el problema a soporte experto',
-      COLORS.purple
-    );
+    console.log('%c ==> Advanced support: escaling problem to expert support', COLORS.orange);
     super.handle(request);
   }
 }
 
+// Expert support
 class ExpertSupport extends BaseHandler {
   override handle(request: string): void {
-    if (request === 'experto') {
-      console.log(
-        'Soporte experto: %cResolviendo problema experto',
-        COLORS.yellow
-      );
+    if (request === 'expert') {
+      console.log('%c > Expert support: Solving basic problem', COLORS.green);
+      console.log('\n');
       return;
     }
-
-    console.log(
-      '%cSoporte experto: No hay nada que hacer... bye bye',
-      COLORS.red
-    );
+    console.log('%c ==> Expert support: Nothing to do... Help!', COLORS.red);
   }
 }
 
 function main() {
-  const basicSupport = new BasicSupport();
-  const advancedSupport = new AdvancedSupport();
-  const expertSupport = new ExpertSupport();
+  const basicSuport = new BasicSupport();
+  const advancedSuport = new AdvancedSupport();
+  const expertSuport = new ExpertSupport();
 
-  basicSupport.setNext(advancedSupport).setNext(expertSupport);
-
-  basicSupport.handle('básico');
-  basicSupport.handle('avanzado');
-  basicSupport.handle('experto');
-  basicSupport.handle('nuclear');
+  basicSuport.setNext(advancedSuport).setNext(expertSuport);
+  basicSuport.handle('basic');
+  basicSuport.handle('advanced');
+  basicSuport.handle('expert');
+  basicSuport.handle('nuclear');
 }
 
 main();

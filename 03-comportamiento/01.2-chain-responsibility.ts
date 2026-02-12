@@ -8,7 +8,8 @@
  * * pero se sabe que se necesita procesar en una secuencia.
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
+
 
 // 1. Interfaz Approver
 interface Approver {
@@ -43,13 +44,11 @@ abstract class BaseApprover implements Approver {
 class Supervisor extends BaseApprover {
   override approveRequest(amount: number): void {
     if (amount <= 1000) {
-      console.log(
-        `Supervisor aprueba la compra de %c$${amount}`,
-        COLORS.yellow
-      );
+      console.log(`%c === APPROVED $${amount} BY SUPERVISOR ===`, COLORS.green);
       return;
     }
 
+    console.log('%c ** ESCALATING **', COLORS.yellow);
     this.next(amount);
   }
 }
@@ -57,20 +56,18 @@ class Supervisor extends BaseApprover {
 class Manager extends BaseApprover {
   override approveRequest(amount: number): void {
     if (amount <= 5000) {
-      console.log(
-        `Supervisor aprueba la compra de %c$${amount}`,
-        COLORS.yellow
-      );
+      console.log(`%c === APPROVED $${amount} BY MANAGER ===`, COLORS.green);
       return;
     }
 
+    console.log('%c ** ESCALATING **', COLORS.yellow);
     this.next(amount);
   }
 }
 
 class Director extends BaseApprover {
   override approveRequest(amount: number): void {
-    console.log(`Director aprueba la compra de %c$${amount}`, COLORS.yellow);
+    console.log(`%c === APPROVED $${amount} BY DIRECTOR ===`, COLORS.green);
   }
 }
 
@@ -80,10 +77,10 @@ function main() {
   // Supervisor: <= 1000
   const supervisor = new Supervisor();
 
-  // Manager: <=5000
+  // Manager: <= 5000
   const manager = new Manager();
 
-  // Director puede aprobar todo
+  // Director: ALL
   const director = new Director();
 
   // Configurar la cadena de responsabilidad

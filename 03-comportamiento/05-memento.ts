@@ -9,7 +9,7 @@
  * https://refactoring.guru/es/design-patterns/memento
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
 
 class GameMemento {
   private level: number;
@@ -38,31 +38,30 @@ class GameMemento {
 class Game {
   private level: number = 1;
   private health: number = 100;
-  private position: string = 'inicio';
+  private position: string = 'Begining';
 
   constructor() {
     console.log(`
-      Jugando en el nivel ${this.level}
-        salud: ${this.health}
-        posición: ${this.position}
-      `);
+           Playing on level ${this.level}
+           health: ${this.health}
+           position: ${this.position}
+        `);
   }
 
   save(): GameMemento {
-    return new GameMemento(this.level, this.health, this.position);
+    return new GameMemento(this.level, this.health, this.position)
   }
 
-  play(level: number, health: number, position: string): void {
+  play(level: number, health: number, position: string) {
     this.level = level;
     this.health = health;
     this.position = position;
 
-    console.log(
-      `Jugando en el nivel ${this.level}
-        salud: ${this.health}
-        posición: ${this.position}
-        `
-    );
+    console.log(`
+           Playing on level ${this.level}
+           health: ${this.health}
+           position: ${this.position}
+        `);
   }
 
   restore(memento: GameMemento): void {
@@ -70,17 +69,11 @@ class Game {
     this.health = memento.getHealth();
     this.position = memento.getPosition();
 
-    console.log(
-      `\n%cProgreso restaurado 
-      
-      %cRestauración en el nivel %c${this.level}
-        salud: ${this.health}
-        posición: ${this.position}
-        `,
-      COLORS.yellow,
-      COLORS.blue,
-      COLORS.white
-    );
+    console.log(`%cProgress restored.
+            %clevel ${this.level}
+            health: ${this.health}
+            position: ${this.position}
+         `, COLORS.yellow, COLORS.blue);
   }
 }
 
@@ -88,11 +81,11 @@ class GameHistory {
   private mementos: GameMemento[] = [];
 
   push(memento: GameMemento) {
-    this.mementos.push(memento);
+    this.mementos.push(memento)
   }
 
-  pop(): GameMemento | null {
-    return this.mementos.pop() ?? null;
+  pop(): GameMemento | undefined {
+    return this.mementos.pop();
   }
 }
 
@@ -102,29 +95,20 @@ function main() {
 
   history.push(game.save());
 
-  // Jugador avanza en el juego
-  game.play(2, 90, 'Bosque Encantado');
+  // Player progress on the game
+  game.play(2, 90, 'Enchanted forest');
   history.push(game.save());
 
-  game.play(3, 70, 'Cueva Oscura');
+  game.play(3, 70, 'Dark cave');
   history.push(game.save());
 
-  game.play(4, 50, 'Castillo del Dragón');
-  console.log('%c\nEstado actual', COLORS.green);
+  game.play(4, 50, 'Dragon castle');
+  history.push(game.save());
 
-  game.restore(history.pop()!);
-  console.log(
-    '%c\nDespués de restaurar el último estado guardado',
-    COLORS.green
-  );
-
-  game.restore(history.pop()!);
-  console.log(
-    '%c\nDespués de restaurar el último estado guardado',
-    COLORS.green
-  );
-
-  console.log('\n\n');
+  console.log('%cCurrent state', COLORS.green);
+  game.restore(history.pop()!)
+  game.restore(history.pop()!)
+  game.restore(history.pop()!)
 }
 
 main();

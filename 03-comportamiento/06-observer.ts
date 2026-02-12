@@ -1,3 +1,5 @@
+import { COLORS } from "../helpers/colors.ts";
+
 /**
  * ! Patrón Observer
  * El patrón Observer es un patrón de diseño de comportamiento que establece
@@ -13,9 +15,6 @@
  *
  * https://refactoring.guru/es/design-patterns/observer
  */
-
-import { COLORS } from '../helpers/colors.ts';
-
 interface Observer {
   notify(videoTitle: string): void;
 }
@@ -30,71 +29,55 @@ class YouTubeChannel {
 
   subscribe(observer: Observer): void {
     this.subscribers.push(observer);
-    console.log(`Nuevo suscriptor al canal %c${this.name}`, COLORS.green);
+    console.log(`\nNew subscriber to channel %c${this.name}`, COLORS.green);
   }
 
-  unsubscribe(observer: Observer): void {
-    this.subscribers = this.subscribers.filter((sub) => sub !== observer);
-    console.log(`Un suscriptor se ha dado de baja "${this.name}"`);
+  unsuscribe(observer: Observer): void {
+    this.subscribers = this.subscribers.filter(sub => sub !== observer)
+    console.log(`\nAn user has unsuscribed from ${this.name}`);
   }
 
-  uploadVideo(videoTitle: string): void {
-    console.log(
-      `Canal ${this.name} ha subido un nuevo video %c${videoTitle}`,
-      COLORS.green
-    );
-
-    for (const subscriber of this.subscribers) {
-      subscriber.notify(videoTitle);
-    }
+  uploadVideo(videoTitle: string) {
+    console.log(`\nChannel ${this.name} has uploaded a new video %c${videoTitle}\n`, COLORS.green);
+    this.subscribers.forEach((sub) => {
+      sub.notify(videoTitle)
+    })
   }
 }
 
 class Subscriber implements Observer {
-  private name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
+  constructor(private name: string) { }
 
   notify(videoTitle: string): void {
-    console.log(
-      `%c${this.name} %cha sido notificado: %cNuevo video ${videoTitle}`,
-      COLORS.blue,
-      COLORS.white,
-      COLORS.yellow
-    );
+    console.log(`%c${this.name} %chas been notified: %cNew video ${videoTitle}`, COLORS.blue, COLORS.white, COLORS.green);
   }
 }
 
 function main() {
-  const channel = new YouTubeChannel('Cocinando con Fernando');
+  const channel = new YouTubeChannel('Cocinando con Nanomixer');
 
-  const melissa = new Subscriber('Melissa');
-  const cesar = new Subscriber('César');
-  const emin = new Subscriber('Emin');
+  const user1 = new Subscriber('Nikki');
+  const user2 = new Subscriber('Manolo');
+  const user3 = new Subscriber('Miguelon');
 
-  channel.subscribe(melissa);
-  channel.subscribe(cesar);
+  channel.subscribe(user1);
+  channel.subscribe(user2);
 
-  channel.uploadVideo('Receta de Tamales de Angular');
+  channel.uploadVideo('How to cook a new React tamal');
 
-  channel.subscribe(emin);
+  channel.subscribe(user3);
 
-  channel.uploadVideo('Receta de React al pastor');
+  channel.uploadVideo('Angular al pastor')
 
-  channel.unsubscribe(cesar);
+  channel.unsuscribe(user2);
 
-  channel.uploadVideo('Receta de Vue de choclo');
+  channel.uploadVideo('Vue grilled')
 
-  channel.unsubscribe(emin);
+  channel.unsuscribe(user1);
 
-  channel.uploadVideo('Parrillada de NodeJS');
+  channel.uploadVideo('Full stack barbecue')
 
-  channel.unsubscribe(melissa);
-  channel.uploadVideo('Docker a la plancha');
-
-  console.log('\n\n');
+  console.log('\n');
 }
 
 main();
